@@ -187,15 +187,15 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
 
         if (bootstrap == null) {
             bootstrap = DubboBootstrap.getInstance();
-            bootstrap.init();
+            bootstrap.initialize();
         }
 
         checkAndUpdateSubConfigs();
 
         //init serviceMetadata
-        serviceMetadata.setVersion(version);
-        serviceMetadata.setGroup(group);
-        serviceMetadata.setDefaultGroup(group);
+        serviceMetadata.setVersion(getVersion());
+        serviceMetadata.setGroup(getGroup());
+        serviceMetadata.setDefaultGroup(getGroup());
         serviceMetadata.setServiceType(getInterfaceClass());
         serviceMetadata.setServiceInterfaceName(getInterface());
         serviceMetadata.setTarget(getRef());
@@ -685,11 +685,11 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
 
     private String getValueFromConfig(ProtocolConfig protocolConfig, String key) {
         String protocolPrefix = protocolConfig.getName().toUpperCase() + "_";
-        String port = ConfigUtils.getSystemProperty(protocolPrefix + key);
-        if (StringUtils.isEmpty(port)) {
-            port = ConfigUtils.getSystemProperty(key);
+        String value = ConfigUtils.getSystemProperty(protocolPrefix + key);
+        if (StringUtils.isEmpty(value)) {
+            value = ConfigUtils.getSystemProperty(key);
         }
-        return port;
+        return value;
     }
 
     private Integer getRandomPort(String protocol) {
